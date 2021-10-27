@@ -251,6 +251,10 @@ nav {
   z-index: 1000;
 }
 
+nav .title {
+  padding-top: 20px;
+}
+
 nav .hamburger-menu {
   padding: 15px;
   cursor: pointer;
@@ -261,6 +265,22 @@ nav .menu-bar {
   width: 60px;
   margin: 10px;
   background-color: #009600;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+nav .menu-bar-1 {
+  -webkit-transform: translateY(9px) rotate(45deg);
+          transform: translateY(9px) rotate(45deg);
+}
+
+nav .menu-bar-2 {
+  display: none;
+}
+
+nav .menu-bar-3 {
+  -webkit-transform: translateY(-9px) rotate(-45deg);
+          transform: translateY(-9px) rotate(-45deg);
 }
 
 .slide-in {

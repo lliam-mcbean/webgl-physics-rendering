@@ -189,6 +189,9 @@ nav  {
   justify-content: right;
   top: 0;
   z-index: 1000;
+ .title {
+   padding-top: 20px;
+ }
   .hamburger-menu {
     padding: 15px;
     cursor: pointer;
@@ -198,6 +201,16 @@ nav  {
     width: 60px;
     margin: 10px;
     background-color: rgb(0, 150, 0);
+    transition: 0.3s;
+  }
+  .menu-bar-1 {
+    transform: translateY(9px) rotate(45deg);
+  }
+  .menu-bar-2 {
+    display: none;
+  }
+  .menu-bar-3 {
+    transform: translateY(-9px) rotate(-45deg);
   }
 }
 .slide-in {

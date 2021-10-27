@@ -648,4 +648,19 @@ document.querySelector('.hamburger-menu').addEventListener('click', () => {
     } else {
         document.querySelector('.work-content').style.display = 'block'
     }
+    if (document.getElementById('menu-bar-1').classList.contains('menu-bar-1')) {
+        document.getElementById('menu-bar-1').classList.remove('menu-bar-1')
+    } else {
+        document.getElementById('menu-bar-1').classList.add('menu-bar-1')
+    }
+    if (document.getElementById('menu-bar-2').classList.contains('menu-bar-2')) {
+        document.getElementById('menu-bar-2').classList.remove('menu-bar-2')
+    } else {
+        document.getElementById('menu-bar-2').classList.add('menu-bar-2')
+    }
+    if (document.getElementById('menu-bar-3').classList.contains('menu-bar-3')) {
+        document.getElementById('menu-bar-3').classList.remove('menu-bar-3')
+    } else {
+        document.getElementById('menu-bar-3').classList.add('menu-bar-3')
+    }
 })
