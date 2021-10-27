@@ -2,7 +2,8 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: "Raleway";
+  font-family: "Press Start 2P";
+  color: #009600;
 }
 
 h3 {
@@ -193,9 +194,8 @@ canvas {
   z-index: 1;
 }
 
-/* BITCOIN CONTENT */
-.bitcoin-csv-parser {
-  display: none;
+.disclaimer {
+  display: block;
   overflow-x: hidden;
   z-index: 1001;
   position: fixed;
@@ -210,82 +210,88 @@ canvas {
   margin-bottom: 5vh;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 10px;
+  border: #009600 solid 1px;
   color: #009600;
-  font-family: "VT323";
+  line-height: 150%;
 }
 
-.bitcoin-csv-parser .bitcoin-content {
-  font-size: 25px;
-  width: 90%;
-  padding: 5%;
-}
-
-.bitcoin-csv-parser .exit-outer {
-  position: fixed;
-  top: 5%;
-  left: 85%;
-  padding: 3px;
-  padding-right: 5%;
-  font-size: 25px;
-  background: rgba(0, 0, 0, 0.8);
+.disclaimer .intro-outer {
+  position: relative;
+  float: right;
+  padding: 10px;
+  padding-right: 20px;
+  font-size: 17px;
   cursor: pointer;
 }
 
-.bitcoin-csv-parser h2 {
-  padding-left: 5%;
+.disclaimer .intro-outer:hover {
+  color: #fcc000;
 }
 
-.bitcoin-csv-parser ul {
-  padding: 5%;
-  padding-top: 0;
-  width: 90%;
+.disclaimer .introduction {
+  padding: 30px;
+  font-size: 17px;
+}
+
+.disclaimer .first {
+  padding-top: 200px;
+}
+
+/* NAVIGATION */
+nav {
+  position: fixed;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  width: 100vw;
+  -webkit-box-pack: right;
+      -ms-flex-pack: right;
+          justify-content: right;
+  top: 0;
+  z-index: 1000;
 }
 
-.bitcoin-csv-parser ul li {
-  padding: 50px;
-  font-size: 22px;
-  list-style: none;
+nav .hamburger-menu {
+  padding: 15px;
+  cursor: pointer;
 }
 
-.bitcoin-csv-parser img {
-  width: 90%;
-  padding-left: 5%;
+nav .menu-bar {
+  height: 8px;
+  width: 60px;
+  margin: 10px;
+  background-color: #009600;
 }
 
-.bitcoin-csv-parser .bitcoin-image-grid {
-  height: 600px;
-  width: 100%;
+.slide-in {
+  -webkit-transform: translate(0px);
+          transform: translate(0px);
+}
+
+.work-content {
+  display: none;
+  overflow: scroll;
+  height: 95vh;
+  padding: 15px;
+  padding-left: 50px;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 0px 10px 10px 0px;
+  border-top: #009600 solid 1px;
+  border-bottom: #009600 solid 1px;
+  border-right: #009600 solid 1px;
+  z-index: 1000;
+}
+
+.work-content .project {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  padding-bottom: 20px;
 }
 
-.bitcoin-csv-parser .bitcoin-image-grid .bitcoin-imagegrid-1 {
-  width: 40%;
-  height: 100%;
-}
-
-.bitcoin-csv-parser .bitcoin-image-grid .bitcoin-image-grid-inner {
-  width: 45%;
-  height: 100%;
-}
-
-.bitcoin-csv-parser .bitcoin-image-grid .bitcoin-image-grid-inner .bitcoin-imagegrid-2 {
-  height: 35%;
-}
-
-.bitcoin-csv-parser .bitcoin-image-grid .bitcoin-image-grid-inner .bitcoin-imagegrid-3 {
-  height: 65%;
+.work-content .tech-stack {
+  font-size: 10px;
 }
 
 @media (max-width: 600px) {

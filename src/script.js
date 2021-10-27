@@ -1,6 +1,5 @@
 import './style.css'
 import * as THREE from 'three'
-// import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 import * as CANNON from 'cannon-es'
 
 /**
@@ -26,7 +25,6 @@ const textureLoader = new THREE.TextureLoader()
 const marbleTexture = textureLoader.load('/textures/more-leaves.png')
 const matcapTexture2 = textureLoader.load('/textures/sandyMatcap.png')
 const matcapTexture1 = textureLoader.load('/textures/cyanMatcap.png')
-const characterDTexture = textureLoader.load('/textures/letter_d.png')
 const particleTexture = textureLoader.load('/textures/particles/1.png')
 const treetopTexture = textureLoader.load('/textures/7.png')
 const fontTexture = textureLoader.load('/textures/oliveMatcap.png')
@@ -227,8 +225,6 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     antialias: true
 })
-renderer.shadowMap.enabled = true
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
@@ -251,7 +247,7 @@ const particlesMaterial3 = new THREE.PointsMaterial({
     alphaMap: particleTexture,
 })
 
-const count = 9000
+const count = 1000
 const radius = 60
 
 const positions = new Float32Array(count * 3)
@@ -299,7 +295,7 @@ let objectsToUpdate = []
 let boxesToUpdate = []
 const sphereGeometry = new THREE.SphereBufferGeometry(1, 28, 28, 0, Math.PI * 2, 0, Math.PI)
 const sphereMaterial = new THREE.MeshStandardMaterial({
-    map: marbleTexture,
+    map: treetopTexture,
     overdraw: true
 })
 
@@ -323,12 +319,6 @@ const createKeyboard = (positionX, positionY, positionZ, sizeX, sizeY, sizeZ) =>
 // Floor
 const mainFloorMaterial = new THREE.MeshBasicMaterial({
     color: parameters.color2,
-})
-const iceFloorMaterial = new THREE.MeshBasicMaterial({
-    color: '#d7fffe'
-})
-const darkIceFloorMaterial = new THREE.MeshBasicMaterial({
-    color: '#7ec0e3'
 })
 
 const floorBuilder = (floorWidth, floorPositionX, floorPositionY, floorPositionZ, floorMaterial) => {
@@ -557,6 +547,7 @@ camera.lookAt(mesh.position)
 // Animate
 
 const clock = new THREE.Clock()
+let time 
 const cameraDirectionVector = new THREE.Vector3()
 let oldElapsedTime = 0
 
@@ -566,22 +557,12 @@ const tick = () =>
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
 
-    // MODELS
-
     // Update Physics World
-    for(let i = 0; i < objectsToUpdate.length; i++) {
-        objectsToUpdate[i].mesh.position.copy(objectsToUpdate[i].body.position)
-    
-        objectsToUpdate[i].mesh.quaternion.copy(objectsToUpdate[i].body.quaternion)
+    for (const object of objectsToUpdate) {
+        object.mesh.position.copy(object.body.position)
+        object.mesh.quaternion.copy(object.body.quaternion)
     }
-    for(let i = 0; i < boxesToUpdate.length; i++) {
-        boxesToUpdate[i].mesh.position.copy(boxesToUpdate[i].body.position)
-    
-        boxesToUpdate[i].mesh.quaternion.copy(boxesToUpdate[i].body.quaternion)
-
-        boxesToUpdate[i].body.force.y = 2.85
-    }
-    world.step(1/60,deltaTime,3)
+    world.step(1/60,deltaTime,1)
 
     // CONTROLS
     camera.getWorldDirection(cameraDirectionVector)
@@ -601,32 +582,12 @@ const tick = () =>
         body.force.z = -cameraDirectionVector.z * 25
     }
 
+    if (body.position.y < -1) {
+        body.position.set(-26,3,0)
+        body.velocity.set(0,0,0)
+    }
     camera.position.set(body.position.x + Math.sin(angle) * 10, body.position.y + 7, body.position.z + Math.cos(angle) * 10)
     camera.lookAt(mesh.position)
-
-    // SPACE ROTATION
-    const speedBuffer = 0.03
-
-    particles.rotation.x = Math.cos(body.position.x * speedBuffer)
-    particles.rotation.y = Math.sin(body.position.z * speedBuffer)
-
-    particles3.rotation.x = Math.sin(body.position.x * speedBuffer)
-    particles3.rotation.y = Math.cos(body.position.z * speedBuffer)
-
-    // NOT WEBGL STUFF
-    if (body.position.x > -22.5 && body.position.x < -17.5 && body.position.z < 8.5 && body.position.z > 3.5) {
-        testingLetters[0].text.position.y += 0.1
-        if(testingLetters[0].text.position.y > 3) {
-            testingLetters[0].text.position.y = 3
-        }
-    } 
-
-    // LETTERING 
-    window.addEventListener('keypress', (event) => {
-        if (event.key == 'Enter' && body.position.x > -22.5 && body.position.x < -17.5 && body.position.z < 8.5 && body.position.z > 3.5) {
-            document.querySelector('.bitcoin-csv-parser').style.display = 'block'
-        }
-    })
 
     // Render
     renderer.render(scene, camera)
@@ -635,35 +596,18 @@ const tick = () =>
 
 tick()
 
-// ENVIRONMENT FUNCTIONS
-treeBuilder(19.5, 5.1, 11.6, 2,4)
-treeBuilder(19.9, 5.1, -15.4, 1.2,2.4)
-treeBuilder(18, 5.1, -16.6, 1,2)
-treeBuilder(18, 1, -3.6, 3,6)
-treeBuilder(13, 1, -5, 2,4)
-treeBuilder(19, 1, 2, 2,4)
+treeBuilder(1, 1.2, 11.4, 2,4)
+treeBuilder(-4, 1.2, 10, 1.7,3.4)
+treeBuilder(2, 1.2, 17, 1.7,3.4)
 
-for(let k = 0; k < 2; k++) {
-    for(let j = 0; j < 2; j++) {
-        for(let i = 0; i < 2; i++) {
-            boxBuilder(1,1,1,-5 - (k -5),1+(i + 0.01),(j + 23), 0.3, icyCubeMaterial)
-        }
-    }
-}
-for(let k = 0; k < 2; k++) {
-    for(let j = 0; j < 2; j++) {
-        for(let i = 0; i < 2; i++) {
-            boxBuilder(1,1,1,-5 - (k - 7.5),1+(i + 0.01),(j + 23), 0.3, icyCubeMaterial)
-        }
-    }
-}
-for(let k = 0; k < 2; k++) {
-    for(let j = 0; j < 2; j++) {
-        for(let i = 0; i < 2; i++) {
-            boxBuilder(1,1,1,-5 - (k - 6),1+(i + 3),(j + 23), 0.3, icyCubeMaterial)
-        }
-    }
-}
+treeBuilder(-20, 1.2, 17, 0.7,1.4)
+treeBuilder(-18, 1.2, 17, 1,2)
+treeBuilder(-19, 1.2, 15, 0.8,1.6)
+
+treeBuilder(-17, 1.2, -17, 0.7,1.4)
+treeBuilder(-15, 1.2, -17, 1,2)
+treeBuilder(-16, 1.2, -15, 0.8,1.6)
+
 // STAIRS
 boxBuilder(2,0.2,6,10,1,10,0, bodyMatcapMaterial)
 boxBuilder(2,0.2,6,12,2,10,0, bodyMatcapMaterial)
@@ -690,21 +634,18 @@ boxBuilder(2,0.2,6,10,1,-14,0, bodyMatcapMaterial)
 boxBuilder(6,0.2,2,6,3,-6,0, bodyMatcapMaterial)
 boxBuilder(6,0.2,2,6,2,-8,0, bodyMatcapMaterial)
 boxBuilder(6,0.2,2,6,1,-10,0, bodyMatcapMaterial)
-// PROJECT FLOOR
-boxBuilder(5,0.2,5,-20,0.25,6,0, bodyMatcapMaterial)
+
 // FLOOR
 floorBuilder(30,0,0.01,0,mainFloorMaterial)
-floorBuilder(8,0,0.02,20,iceFloorMaterial)
-floorBuilder(3,-2,0.03,19,darkIceFloorMaterial)
-
-// KEYBOARD
-// createKeyboard(-25,1,6,1,0.3,1)
-// createKeyboard(-23.5,1,6,1,0.3,1)
-// createKeyboard(-25,1,7.5,1,0.3,1)
-// createKeyboard(-25,1,4.5,1,0.3,1)
-// createKeyboard(-27,1,6,1,0.3,6)
 
 // NOT WEBGL STUFF
-document.querySelector('.exit-outer').addEventListener('click', () => {
-    document.querySelector('.bitcoin-csv-parser').style.display = 'none'
+document.querySelector('.intro-outer').addEventListener('click', () => {
+    document.querySelector('.disclaimer').style.display = 'none'
+})
+document.querySelector('.hamburger-menu').addEventListener('click', () => {
+    if (document.querySelector('.work-content').style.display === 'block') {
+        document.querySelector('.work-content').style.display = 'none'
+    } else {
+        document.querySelector('.work-content').style.display = 'block'
+    }
 })
